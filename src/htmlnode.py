@@ -26,3 +26,21 @@ class HTMLNode:
 
     def __repr__(self) -> str:
         return f"HTMLNode(tag: {self.tag}, value: {self.value}, children: {self.children}, props: {self.props})"
+
+
+class LeafNode(HTMLNode):
+    def __init__(
+        self,
+        tag: str,
+        value: str,
+        props: dict | None = None,
+    ) -> None:
+        super().__init__(tag=tag, value=value, children=None, props=props)
+
+    def to_html(self) -> str:
+        """If no tag, returns raw text; otherwise returns formatted HTML tag from LeafNode params"""
+        if not self.value:
+            raise Exception(ValueError)
+        if not self.tag:
+            return self.value
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
