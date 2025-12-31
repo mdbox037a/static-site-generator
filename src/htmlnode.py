@@ -52,14 +52,15 @@ class ParentNode(HTMLNode):
 
     def to_html(self):
         """Return a string representing the HTML tag of the node and its children"""
-        if not self.tag:
+        if self.tag is None:
             raise ValueError(
                 f"ValueError: Tag must be defined; current tag value: {self.tag}"
             )
-        if not self.children:
+        if self.children is None:
             raise ValueError(
                 f"ValueError: Child value(s) must be defined; current children value: {self.children}"
             )
         html_tree = ""
         for child in self.children:
             html_tree += child.to_html()
+        return f"<{self.tag}{self.props_to_html()}>{html_tree}</{self.tag}>"
