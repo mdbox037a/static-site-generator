@@ -47,4 +47,19 @@ class LeafNode(HTMLNode):
 
 
 class ParentNode(HTMLNode):
-    pass
+    def __init__(self, tag: str, children: list, props: dict | None = None) -> None:
+        super().__init__(tag=tag, value=None, children=children, props=props)
+
+    def to_html(self):
+        """Return a string representing the HTML tag of the node and its children"""
+        if not self.tag:
+            raise ValueError(
+                f"ValueError: Tag must be defined; current tag value: {self.tag}"
+            )
+        if not self.children:
+            raise ValueError(
+                f"ValueError: Child value(s) must be defined; current children value: {self.children}"
+            )
+        html_tree = ""
+        for child in self.children:
+            html_tree += child.to_html()
