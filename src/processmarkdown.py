@@ -15,12 +15,11 @@ def split_nodes_delimiter(
     for old_node in old_nodes:
         if old_node.text_type != TextType.TEXT:
             new_nodes.append(old_node)
-        elif (old_node.text.count(delimiter) % 2) != 0:
-            raise Exception(
-                f"Error: Invalid markdown - odd number of delimiter '{delimiter}' in node text"
-            )
+            continue
+        pieces = old_node.text.split(delimiter)
+        if len(pieces) % 2 == 0:
+            raise ValueError("invalid markdown, formatted section not closed")
         else:
-            pieces = old_node.text.split(delimiter)
             for index, piece in enumerate(pieces):
                 if index % 2 == 0 and piece != "":
                     new_nodes.append(TextNode(piece, TextType.TEXT))
