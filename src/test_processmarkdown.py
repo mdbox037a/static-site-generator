@@ -68,6 +68,30 @@ class TestProcessMarkdown(unittest.TestCase):
         )
         self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
+    def test_extract_multiple_markdown_images(self):
+        matches = extract_markdown_images(
+            "sample 1 ![image1](test1.com) and sample 2 ![image2](test2.com)"
+        )
+        self.assertListEqual(
+            [("image1", "test1.com"), ("image2", "test2.com")], matches
+        )
+
+    def test_extract_markdown_links(self):
+        matches = extract_markdown_links("Sample text with [link](www.example.com)")
+        self.assertListEqual([("link", "www.example.com")], matches)
+
+    def test_extract_multiple_markdown_links(self):
+        matches = extract_markdown_links(
+            "sample 1 [link1](test1.com) and sample 2 [link2](test2.com)"
+        )
+        self.assertListEqual([("link1", "test1.com"), ("link2", "test2.com")], matches)
+
+    def test_extract_mixed_markdown(self):
+        matches = extract_markdown_links(
+            "sample 1 [link](test1.com) and sample 2 ![image](test2.com)"
+        )
+        self.assertListEqual([("link", "test1.com")], matches)
+
 
 if __name__ == "__main__":
     unittest.main()
