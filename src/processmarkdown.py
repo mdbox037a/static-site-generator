@@ -43,3 +43,13 @@ def extract_markdown_links(text: str) -> list[tuple[str, str]]:
     markdown link strings
     """
     return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+
+def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
+    """Return a list of text and image TextNodes; parse nodes in old_nodes for image strings"""
+    pass
+
+
+def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
+    """Return a list of text and link TextNodes; parse nodes in old_nodes for link strings"""
+    pass
