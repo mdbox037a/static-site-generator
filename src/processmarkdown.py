@@ -95,9 +95,15 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     return new_nodes
 
 
-def test_to_nodes(text: str) -> list[TextNode]:
+def text_to_textnodes(text: str) -> list[TextNode]:
     """
     Return a list of TextNodes that is a combination of all TextType splitters
     above for complete node representation of a string of markdown
     """
-    pass
+    combined_nodes = [TextNode(text, TextType.TEXT)]
+    delimiters = {"**": "TextType.BOLD", "_": "TextType.ITALIC", "`": "TextType.CODE"}
+    for d in delimiters:
+        combined_nodes = split_nodes_delimiter(combined_nodes, d[0], TextType(d[1]))
+    combined_nodes = split_nodes_image(combined_nodes)
+    combined_nodes = split_nodes_link(combined_nodes)
+    return combined_nodes
