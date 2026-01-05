@@ -93,3 +93,11 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
         else:
             new_nodes.append(old_node)
     return new_nodes
+
+
+def test_to_nodes(text: str) -> list[TextNode]:
+    """
+    Return a list of TextNodes that is a combination of all TextType splitters
+    above for complete node representation of a string of markdown
+    """
+    pass
