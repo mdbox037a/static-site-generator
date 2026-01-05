@@ -101,9 +101,9 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     above for complete node representation of a string of markdown
     """
     combined_nodes = [TextNode(text, TextType.TEXT)]
-    delimiters = {"**": "TextType.BOLD", "_": "TextType.ITALIC", "`": "TextType.CODE"}
+    delimiters = {"**": TextType.BOLD, "_": TextType.ITALIC, "`": TextType.CODE}
     for d in delimiters:
-        combined_nodes = split_nodes_delimiter(combined_nodes, d[0], TextType(d[1]))
+        combined_nodes = split_nodes_delimiter(combined_nodes, d, delimiters[d])
     combined_nodes = split_nodes_image(combined_nodes)
     combined_nodes = split_nodes_link(combined_nodes)
     return combined_nodes
