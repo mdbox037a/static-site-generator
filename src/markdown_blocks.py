@@ -1,4 +1,5 @@
 from enum import Enum
+from htmlnode import HTMLNode
 
 
 class BlockType(Enum):
@@ -49,3 +50,14 @@ def block_to_block_type(block: str) -> BlockType:
             i += 1
         return BlockType.ORDERED_LIST
     return BlockType.PARAGRAPH
+
+
+def markdown_to_html_node(markdown: str) -> HTMLNode:
+    """
+    Accept a full markdown document and return a single parent HTMLNode containing
+    all HTMLNode children representing its nested elements
+    """
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        type_string = block_to_block_type(block)
+        pass  # progress marker
