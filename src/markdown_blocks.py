@@ -70,6 +70,13 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
                 child_hnodes = text_to_children(clean_block)
                 block_parent_hnode = ParentNode("p", child_hnodes)
                 children.append(block_parent_hnode)
+            case BlockType.HEADING:
+                raw_heading_text = block.lstrip("#")
+                num_hashes = len(block) - len(raw_heading_text)
+                clean_heading_text = raw_heading_text.strip()
+                child_hnodes = text_to_children(clean_heading_text)
+                block_parent_hnode = ParentNode(f"h{num_hashes}", child_hnodes)
+                children.append(block_parent_hnode)
             case BlockType.CODE:
                 inner_text = remove_codeblock_backticks(block)
                 tnode = TextNode(inner_text, TextType.CODE)
