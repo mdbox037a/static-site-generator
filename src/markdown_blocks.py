@@ -67,6 +67,7 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
         match btype:
             case BlockType.PARAGRAPH:
                 clean_block = " ".join(block.splitlines())
+
                 child_hnodes = text_to_children(clean_block)
                 block_parent_hnode = ParentNode("p", child_hnodes)
                 children.append(block_parent_hnode)
@@ -74,16 +75,25 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
                 raw_heading_text = block.lstrip("#")
                 num_hashes = len(block) - len(raw_heading_text)
                 clean_heading_text = raw_heading_text.strip()
+
                 child_hnodes = text_to_children(clean_heading_text)
                 block_parent_hnode = ParentNode(f"h{num_hashes}", child_hnodes)
                 children.append(block_parent_hnode)
             case BlockType.CODE:
                 inner_text = remove_codeblock_backticks(block)
+
                 tnode = TextNode(inner_text, TextType.CODE)
                 code_hnode = text_node_to_html_node(tnode)
                 pre_node = ParentNode("pre", [code_hnode])
                 children.append(pre_node)
-            # insert further cases here
+            case BlockType.QUOTE:
+                qblock = " ".join(
+                    [qline.lstrip(">").strip() for qline in block.splitlines()]
+                )
+
+                child_hnodes = text_to_children(qblock)
+                block_parent_hnode = ParentNode("blockquote", child_hnodes)
+                children.append(block_parent_hnode)
     div_parent_hnode = ParentNode("div", children)
     return div_parent_hnode
 
