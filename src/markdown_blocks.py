@@ -94,6 +94,15 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
                 child_hnodes = text_to_children(qblock)
                 block_parent_hnode = ParentNode("blockquote", child_hnodes)
                 children.append(block_parent_hnode)
+            case BlockType.UNORDERED_LIST:
+                pass
+                # planning
+                # get each list item from the list block
+                # strip the "* " and "- " at the beginning of each
+                # support inline markdown for each list item (like paragraph)
+                # overall, creating multiple li nodes with a single ul parent
+            case BlockType.ORDERED_LIST:
+                pass
     div_parent_hnode = ParentNode("div", children)
     return div_parent_hnode
 
