@@ -1,7 +1,8 @@
 from enum import Enum
+import re
 from htmlnode import HTMLNode, ParentNode
-from processmarkdown import TextNode, TextType, text_to_textnodes
-from textnode import text_node_to_html_node
+from processmarkdown import text_to_textnodes
+from textnode import TextNode, TextType, text_node_to_html_node
 
 
 class BlockType(Enum):
@@ -65,13 +66,32 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
         btype = block_to_block_type(block)
         match btype:
             case BlockType.PARAGRAPH:
-                child_hnodes = []
-                tnodes = text_to_textnodes(block)
-                for tnode in tnodes:
-                    child_hnodes.append(text_node_to_html_node(tnode))
-                parent_hnode = ParentNode("p", child_hnodes)
+                clean_block = " ".join(block.splitlines())
+                child_hnodes = text_to_children(clean_block)
+                block_parent_hnode = ParentNode("p", child_hnodes)
+                children.append(block_parent_hnode)
+            case BlockType.CODE:
+                inner_text = remove_codeblock_backticks(block)
+                tnode = TextNode(inner_text, TextType.CODE)
+                code_hnode = text_node_to_html_node(tnode)
+                pre_node = ParentNode("pre", [code_hnode])
+                children.append(pre_node)
+            # insert further cases here
+    div_parent_hnode = ParentNode("div", children)
+    return div_parent_hnode
 
 
-def text_to_children(text: str) -> list[HTMLNode]:
-    """Accept a string and return a list of HTMLNodes that represent inline markdown children"""
-    pass  # progress marker
+def text_to_children(block: str) -> list[HTMLNode]:
+    """Accept a text block string and return a list of HTMLNodes that represent inline markdown children"""
+    child_hnodes = []
+    tnodes = text_to_textnodes(block)
+    for tnode in tnodes:
+        child_hnodes.append(text_node_to_html_node(tnode))
+    return child_hnodes
+
+
+def remove_codeblock_backticks(codeblock: str) -> str:
+    """Take multi-line codeblock and return it without the leading and trailing backticks"""
+    lines = codeblock.splitlines()
+    inner_lines = lines[1:-1]
+    return "\n".join(inner_lines) + "\n"
