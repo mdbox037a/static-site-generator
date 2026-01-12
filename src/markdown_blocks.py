@@ -95,7 +95,13 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
                 block_parent_hnode = ParentNode("blockquote", child_hnodes)
                 children.append(block_parent_hnode)
             case BlockType.UNORDERED_LIST:
-                pass
+                list_items = [li.lstrip("- ").strip() for li in block.splitlines()]
+                child_hnodes = []
+                for li in list_items:
+                    child_hnodes.extend(text_to_children(li))
+                li_hnodes = []
+                for child_hnode in child_hnodes:
+                    pass  # progress marker
                 # planning
                 # get each list item from the list block
                 # strip the "* " and "- " at the beginning of each
