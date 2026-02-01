@@ -39,8 +39,9 @@ class LeafNode(HTMLNode):
 
     def to_html(self) -> str:
         """If no tag, returns raw text; otherwise returns formatted HTML tag from LeafNode params"""
-        if not self.value:
-            raise Exception(ValueError)
+        if self.value is None:
+            # print("DEBUG: leaf with empty value:", self.tag, self.props)
+            raise ValueError("No leaf node value to process")
         if not self.tag:
             return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
