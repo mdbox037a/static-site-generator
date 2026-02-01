@@ -1,9 +1,9 @@
 from textnode import TextNode, TextType
+from copystatic import copy_static
 
 
 def main() -> None:
-    test_node = TextNode("sample url text", TextType.LINK, "http://sample.example.com")
-    print(test_node)
+    copy_static()
 
 
 if __name__ == "__main__":
