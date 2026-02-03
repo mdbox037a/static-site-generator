@@ -1,4 +1,5 @@
 import os
+import pathlib
 from markdown_blocks import markdown_to_html_node
 
 
@@ -44,3 +45,26 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
     with open(dest_path, "w") as index:
         index.write(index_html)
+
+
+def generate_pages_recursive(
+    dir_path_content: str, template_path, dest_dir_path
+) -> None:
+    """
+    Crawl every entry in the content/ directory and generate a new .html file
+    for each .md file, written to public/ with the same dir structure as in content/
+    """
+
+    content_items = os.listdir(dir_path_content)
+    for item in content_items:
+        # item_src_path = str(pathlib.Path(item).absolute())
+        item_src_path = os.path.join(dir_path_content, item)
+        print(f"DEBUG: {item_src_path}")
+        item_dst_path = os.path.join(dest_dir_path, item.replace(".md", ".html"))
+        print(f"DEBUG: {item_dst_path}")
+        if item.endswith(".md"):
+            generate_page(item_src_path, template_path, item_dst_path)
+        elif os.path.isfile(item):
+            continue
+        else:
+            generate_pages_recursive(item_src_path, template_path, item_dst_path)
