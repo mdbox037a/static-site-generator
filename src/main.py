@@ -10,7 +10,7 @@ def main() -> None:
         basepath = "/"
 
     copy_static()
-    generate_pages_recursive(basepath, "content/", "template.html", "public/")
+    generate_pages_recursive(basepath, "content/", "template.html", "docs/")
 
 
 if __name__ == "__main__":
