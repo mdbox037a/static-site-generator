@@ -62,11 +62,10 @@ def generate_pages_recursive(
 
     content_items = os.listdir(dir_path_content)
     for item in content_items:
-        # item_src_path = str(pathlib.Path(item).absolute())
         item_src_path = os.path.join(dir_path_content, item)
-        print(f"DEBUG: {item_src_path}")
+        # print(f"DEBUG: {item_src_path}")
         item_dst_path = os.path.join(dest_dir_path, item.replace(".md", ".html"))
-        print(f"DEBUG: {item_dst_path}")
+        # print(f"DEBUG: {item_dst_path}")
         if item.endswith(".md"):
             generate_page(basepath, item_src_path, template_path, item_dst_path)
         elif os.path.isfile(item):
