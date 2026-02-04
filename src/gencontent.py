@@ -16,7 +16,9 @@ def extract_title(markdown: str) -> str:
     raise Exception("No h1 detected: invalid document for site conversion")
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(
+    basepath: str, from_path: str, template_path: str, dest_path: str
+) -> None:
     """
     Accept contents of a markdown file as source for static site and convert its
     contents into an html document; store the new html document in dest_path
@@ -35,8 +37,11 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
     html_title_string = extract_title(markdown_file)
     html_content_string = markdown_to_html_node(markdown_file).to_html()
-    index_html = template_file.replace("{{ Title }}", html_title_string).replace(
-        "{{ Content }}", html_content_string
+    index_html = (
+        template_file.replace("{{ Title }}", html_title_string)
+        .replace("{{ Content }}", html_content_string)
+        .replace('href="/', f'href="{basepath}')
+        .replace('src="/', f'src="{basepath}')
     )
 
     dst_dir = os.path.dirname(dest_path)
@@ -48,7 +53,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
 
 def generate_pages_recursive(
-    dir_path_content: str, template_path, dest_dir_path
+    basepath: str, dir_path_content: str, template_path, dest_dir_path
 ) -> None:
     """
     Crawl every entry in the content/ directory and generate a new .html file
@@ -63,8 +68,10 @@ def generate_pages_recursive(
         item_dst_path = os.path.join(dest_dir_path, item.replace(".md", ".html"))
         print(f"DEBUG: {item_dst_path}")
         if item.endswith(".md"):
-            generate_page(item_src_path, template_path, item_dst_path)
+            generate_page(basepath, item_src_path, template_path, item_dst_path)
         elif os.path.isfile(item):
             continue
         else:
-            generate_pages_recursive(item_src_path, template_path, item_dst_path)
+            generate_pages_recursive(
+                basepath, item_src_path, template_path, item_dst_path
+            )
