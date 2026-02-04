@@ -10,10 +10,11 @@ def main() -> None:
         basepath = "/"
 
     source_dir_path = "./content/"
+    static_dir_path = "./static"
     dest_dir_path = "./docs/"
     template_path = "./template.html"
 
-    copy_static(source_dir_path, dest_dir_path)
+    copy_static(static_dir_path, dest_dir_path)
     generate_pages_recursive(basepath, source_dir_path, template_path, dest_dir_path)
 
 
