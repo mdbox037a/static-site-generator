@@ -2,10 +2,10 @@ import os
 import shutil
 
 
-def copy_static():
+def copy_static(src_dir: str, dst_dir: str):
     """Copy all contents of the src dir into the dst dir"""
-    src_dir = os.path.abspath("static")
-    dst_dir = os.path.abspath("public")
+    # src_dir = os.path.abspath("static")
+    # dst_dir = os.path.abspath("public")
     if os.path.exists(dst_dir):
         shutil.rmtree(dst_dir)
 
